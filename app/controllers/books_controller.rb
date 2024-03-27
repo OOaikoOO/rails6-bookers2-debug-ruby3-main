@@ -28,6 +28,7 @@ class BooksController < ApplicationController
 
   def edit
     @book = Book.find(params[:id])
+    @button_text = "Update Book"
   end
 
   def update
