@@ -5,9 +5,11 @@
   </div>
   <div class="form-group">
     <%= f.label :opinion %>
-    <%= f.text_area :body, class: 'form-control book_body', name: 'book[body]' %>
+    <%= f.text_field :body, class: 'form-control book_body', name: 'book[body]' %>
   </div>
   <div class="form-group">
-    <%= f.submit 'Create Book', class: 'btn btn-success' %>
+    <%= button_tag type: 'submit', class: 'btn btn-success' do %>
+      <%= button_text %>
+    <% end %>
   </div>
 <% end %>
