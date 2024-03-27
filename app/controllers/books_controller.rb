@@ -1,28 +1,26 @@
 class BooksController < ApplicationController
-
+  before_action :ensure_correct_user, only: [:edit, :update]
+  
   def new
     @book = Book.new
-    @button_text = "Create Book"
   end 
  
   def show
     @book = Book.find(params[:id])
     @user = @book.user
-    @button_text = "Create Book"
   end
 
   def index
     @books = Book.all
-    @button_text = "Create Book"
+    @book = Book.new
   end
 
   def create
     @book = Book.new(book_params)
-    @button_text = "Create Book"
     @book.user_id = current_user.id
     if @book.save
-      redirect_to book_path(@book)
       flash[:notice] = "You have created book successfully."
+      redirect_to book_path(@book)
     else
       @books = Book.all
       render 'index'
@@ -37,8 +35,8 @@ class BooksController < ApplicationController
   def update
     @book = Book.find(params[:id])
     if @book.update(book_params)
-      redirect_to book_path(@book)
       flash[:notice] = "You have updated book successfully."
+      redirect_to book_path(@book)
     else
       render "edit"
     end
@@ -54,5 +52,12 @@ class BooksController < ApplicationController
 
   def book_params
     params.require(:book).permit(:title, :body)
+  end
+  
+  def ensure_correct_user
+    book = Book.find(params[:id])
+    unless book.user_id == current_user.id
+      redirect_to books_path
+    end
   end
 end
