@@ -5,12 +5,22 @@ class BooksController < ApplicationController
     @book = Book.new
   end 
  
+  def button_text
+    if action_neme == "new"
+      "Create Book"
+    elsif action_name == "edit"
+      "Update Book"
+    end
+  end
+  
   def show
     @book = Book.find(params[:id])
+    @book_new = Book.new
     @user = @book.user
   end
 
   def index
+    @user = current_user
     @books = Book.all
     @book = Book.new
   end
@@ -22,6 +32,7 @@ class BooksController < ApplicationController
       flash[:notice] = "You have created book successfully."
       redirect_to book_path(@book)
     else
+      @user = current_user
       @books = Book.all
       render 'index'
     end
